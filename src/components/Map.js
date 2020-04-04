@@ -55,8 +55,6 @@ export class MapContainer extends Component {
                         </InfoWindow>
                     </Map>
                 </div>
-                <input id="xd" />
-                <button onClick={this.changeLocation}>click me</button>
             </div>
         );
     }

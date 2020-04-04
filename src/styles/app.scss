@@ -1,0 +1,39 @@
+.app-layout {
+    .app-header {
+        background: #FFF;
+        width: 100%;
+        .centerer {
+            width: 95%;
+            margin: auto;
+            padding: 1rem 0;
+            position: relative;
+            button {
+                margin-right: 1rem;
+            }
+            .right-content {
+                height: 100%;
+                position: absolute;
+                right: 0;
+                top: 0;
+                button {
+                    position: relative;
+                    top: 50%;
+                    transform: translateY(-50%);
+                }
+            }
+        }
+    }
+}
+
+.page {
+    .columns .column img {
+        position: relative;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+    .newpost {
+        .box {
+            margin: 2rem;
+        }   
+    }
+}

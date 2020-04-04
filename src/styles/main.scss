@@ -6,7 +6,7 @@
 }
 
 $primary: #7d5fff;
-$link: blue;
+$link: #620f99;
 $notification-padding: 0.5rem;
 
 body {
@@ -19,6 +19,5 @@ body {
 @import "loginform.scss";
 @import "homepage.scss";
 @import "footer.scss";
-@import "setup.scss";
 @import "header.scss";
 @import "app.scss";

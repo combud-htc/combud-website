@@ -24,19 +24,28 @@
     background: #FFF;
     width: 100vw;
     min-height: 20vh;
+    padding: 2rem 0;
     .content {
         margin: auto;
         width: 90%;
         h1 {
             text-align: center;
-            padding-top: 2rem;
+        }
+        p {
+            width: 70%;
+            margin: auto;
+            word-wrap: break-word;
+            white-space: pre-line;
+            font-size: 1.1rem;
         }
     }
 }
 
-@media (max-width : 450px) {
+@media (max-width : 780px) {
     .hero {
+        padding-top: 2.5rem;
         margin-top: 1rem; 
+        text-align: center;
     }
     .hero .columns .content,img {
         top: initial !important;

@@ -11,7 +11,8 @@ export default class Layout extends Component {
         this.GetLoggedIn = this.GetLoggedIn.bind(this);
 
         this.state = {
-            loggedIn: true
+            loggedIn: true,
+            username : ""
         }
 
     }
@@ -24,6 +25,10 @@ export default class Layout extends Component {
             if(response["statusCode"] != 1) {
                 console.error(response["errorMessage"]);
             } else {
+                if(response["loggedIn"]) {
+                    this.setState({"username": response["Username"]});
+                }
+
                 this.setState({"loggedIn" : response["isLoggedIn"]});
             }
         } catch(e) {
@@ -31,11 +36,6 @@ export default class Layout extends Component {
         }
     }
 
-    componentDidMount() {
-        if(typeof window !== "undefined") {
-            require('luxy.js').init();
-        }
-    }
     render() {
         return (
             <div className="app" id="luxy">

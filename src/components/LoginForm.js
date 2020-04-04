@@ -22,6 +22,8 @@ export default class LoginForm extends Component {
             password: "",
             firstName: "",
             lastName: "",
+            country: "",
+            town: "",
             loginError: false,
             formErrors: {
                 firstName: "",
@@ -29,7 +31,9 @@ export default class LoginForm extends Component {
                 email: "",
                 password: "",
                 conPassword: "",
-                username: ""
+                username: "",
+                country: "",
+                town: ""
             }
         }
 
@@ -92,33 +96,37 @@ export default class LoginForm extends Component {
         const { name, value } = e.target
         let formErrors = this.state.formErrors
 
-        switch (name) {
+        this.setState({[name]: value}, () => {
+            switch (name) {
             case 'firstName':
-                formErrors.firstName = value.length > 0 && value.length < 2 || value.length > 30 ? 'minimum of 2 characters and maximum of 30 characters' : "";
+                formErrors.firstName = value.length > 0 && value.length < 2 || value.length > 30 ? 'Minimum of 2 characters and maximum of 30 characters' : "";
                 break;
             case 'lastName':
-                formErrors.lastName = value.length > 0 && value.length < 2 || value.length > 30 ? 'minimum of 2 characters and maximum of 30 characters' : "";
+                formErrors.lastName = value.length > 0 && value.length < 2 || value.length > 30 ? 'Minimum of 2 characters and maximum of 30 characters' : "";
                 break;
             case 'username':
-                formErrors.username = value.length > 0 && value.length < 3 || value.length > 20 ? 'minimum of 3 characters and maximum of 20 characters' : "";
+                formErrors.username = value.length > 0 && value.length < 3 || value.length > 20 ? 'Minimum of 3 characters and maximum of 20 characters' : "";
                 break;
             case 'email':
-                formErrors.email = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(value) && value.length > 0 ? '' : "invalid email";
+                formErrors.email = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(value) && value.length > 0 ? '' : "Invalid email";
                 break;
             case 'password':
-                formErrors.password = value.length > 0 && value.length < 6 ? 'minimum of 6 characters' : "";
+                formErrors.password = value.length > 0 && value.length < 6 ? 'Minimum of 6 characters' : "";
                 break;
             case 'conPassword':
-                formErrors.conPassword = formErrors.password != formErrors.conPassword ? 'needs to be the same password' : '';
+                formErrors.conPassword = value.length > 0 && this.state.conPassword == this.state.password ? '' : 'Needs to be the same as password';
+                break;
+            case 'town':
+                formErrors.town = value.length > 0 && value.length > 30 ? 'Maximum of 30 characters' : '';
+                break;
+            case 'country':
+                formErrors.country = value.length > 0 && value.length < 4 || value.length > 30 ? 'Minimum of 4 characters and maximum of 30 characters' : '';
                 break;
         }
-
-        this.setState({ formErrors: formErrors })
-        this.setState({[name]: value})
-
+        this.setState({ formErrors: formErrors })})
     }
 
-    async handleSubmit(e) { 
+    async handleSubmit(e) {
         e.preventDefault()
         if (this.state.currentForm == this.Signin) {
             const email = this.state.email;
@@ -142,36 +150,38 @@ export default class LoginForm extends Component {
             }
 
         } else if (this.state.currentForm == this.Register) {
-            const email = this.state.email;
-            const password = this.state.password;
-            const username = this.state.username;
-            const firstName = this.state.firstName;
-            const lastName = this.state.lastName;
-
-            try {
-                const r = await axios.post("/Authentication/Register", {
-                    "Email": email,
-                    "Password": password,
-                    "Username": username,
-                    "FirstName": firstName,
-                    "LastName": lastName
-                });
-
-                const response = r.data;
-
-                if(response["statusCode"] != 1) {
-                    alert(response["errorMessage"]);
-                } else {
-                    console.log("EPIC!");
-                    //ask the user to check their inbocks!
+                const email = this.state.email;
+                const password = this.state.password;
+                const username = this.state.username;
+                const firstName = this.state.firstName;
+                const lastName = this.state.lastName;
+                const country = this.state.country;
+                const town = this.state.town;
+    
+                try {
+                    const r = await axios.post("/Authentication/Register", {
+                        "Email": email,
+                        "Password": password,
+                        "Username": username,
+                        "FirstName": firstName,
+                        "LastName": lastName
+                    });
+    
+                    const response = r.data;
+    
+                    if(response["statusCode"] != 1) {
+                        alert(response["errorMessage"]);
+                    } else {
+                        console.log("EPIC!");
+                        //ask the user to check their inbocks!
+                    }
+                } catch (e) {
+                    console.error(e);
+                    // alert user to error!
                 }
-            } catch (e) {
-                console.error(e);
-                // alert user to error!
+            } else {
+                console.log('form not valid')
             }
-        } else {
-
-        }
     }
 
     Register() {
@@ -206,12 +216,40 @@ export default class LoginForm extends Component {
                                 {this.state.formErrors.lastName}
                             </div> : <></>}
                         </div>
+                        <div className="columns">
+                        <div className="column">
+                            <div className="field">
+                                <p className="control has-icons-left has-icons-right">
+                                    <input pattern=".{3,}" className="input" type="text" name="country" placeholder="Country" onChange={this.handleChange} />
+                                    <span className="icon is-small is-left">
+                                        <i className="fas fa-globe-europe"></i>
+                                    </span>
+                                </p>
+                            </div>
+                            {this.state.formErrors.country ? <div className="notification is-warning is-light">
+                                    {this.state.formErrors.country}
+                                </div> : <></>}
+                        </div>
+                        <div className="column">
+                            <div className="field">
+                                <p className="control has-icons-left has-icons-right">
+                                    <input pattern=".{3,}" className="input" type="text" name="town" placeholder="Town" onChange={this.handleChange} />
+                                    <span className="icon is-small is-left">
+                                        <i className="fas fa-building"></i>
+                                    </span>
+                                </p>
+                            </div>
+                            {this.state.formErrors.town ? <div className="notification is-warning is-light">
+                                {this.state.formErrors.town}
+                            </div> : <></>}
+                        </div>
+                    </div>
                     </div>
                     <div className="field">
                         <p className="control has-icons-left has-icons-right">
                             <input pattern=".{3,}" className="input" type="text" name="username" placeholder="Username" onChange={this.handleChange} />
                             <span className="icon is-small is-left">
-                                <i className="fas fa-user"></i>
+                                <i className="fas fa-tag"></i>
                             </span>
                         </p>
                     </div>
@@ -229,6 +267,7 @@ export default class LoginForm extends Component {
                     {this.state.formErrors.email ? <div className="notification is-warning is-light">
                             {this.state.formErrors.email}
                         </div> : <></>}
+                        
                     <div className="field">
                         <p className="control has-icons-left">
                             <input className="input" type="password" name="password" placeholder="Password" onChange={this.handleChange} />
@@ -242,7 +281,7 @@ export default class LoginForm extends Component {
                         </div> : <></>}
                     <div className="field">
                         <p className="control has-icons-left">
-                            <input className="input" type="password" name="conPassword" placeholder="Confirm-password" onChange={this.handleChange} />
+                            <input className="input" type="password" name="conPassword" placeholder="Confirm Password" onChange={this.handleChange} />
                             <span className="icon is-small is-left">
                                 <i className="fas fa-lock"></i>
                             </span>
@@ -252,7 +291,7 @@ export default class LoginForm extends Component {
                             {this.state.formErrors.conPassword}
                         </div> : <></>}
                     <div className="field">
-                        <input className="button is-primary" value="Register" type="submit" onSubmit={this.handleSubmit} />
+                        <input className="button is-primary" value="Register" type="submit" onClick={this.handleSubmit} />
                     </div>
                 </form>
                 <p>Have an account already? <a onClick={this.Toggle} href="#">Sign in here.</a></p>
