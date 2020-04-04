@@ -6,6 +6,7 @@ module.exports = {
         component: require.resolve(`./src/components/Layout.js`),
       },
     },
-    `gatsby-plugin-sass`
+    `gatsby-plugin-sass`,
+    `gatsby-plugin-react-helmet`
   ],
 }

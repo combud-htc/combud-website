@@ -1,0 +1,45 @@
+.hero {
+    width: 90vw;
+    margin: auto;
+    height: 80vh;
+    .columns {
+        height: 100%;
+        .content {
+            position: relative;
+            top: 50%;
+            transform: translateY(-50%);
+            button {
+                margin-right: 1rem;
+            }
+        }
+        img {
+            position: relative;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+    }
+}
+
+.about {
+    background: #FFF;
+    width: 100vw;
+    min-height: 20vh;
+    .content {
+        margin: auto;
+        width: 90%;
+        h1 {
+            text-align: center;
+            padding-top: 2rem;
+        }
+    }
+}
+
+@media (max-width : 450px) {
+    .hero {
+        margin-top: 1rem; 
+    }
+    .hero .columns .content,img {
+        top: initial !important;
+        transform: initial !important;
+    }
+}

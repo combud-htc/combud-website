@@ -4,3 +4,21 @@
     margin: 0;
     padding: 0;
 }
+
+$primary: #7d5fff;
+$link: blue;
+$notification-padding: 0.5rem;
+
+body {
+    background: #ecf0f1;
+    min-height: 100vh;
+}
+
+@import "~bulma/bulma.sass";
+@import "animate.css";
+@import "loginform.scss";
+@import "homepage.scss";
+@import "footer.scss";
+@import "setup.scss";
+@import "header.scss";
+@import "app.scss";
