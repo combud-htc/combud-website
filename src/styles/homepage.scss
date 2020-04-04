@@ -1,0 +1,54 @@
+.hero {
+    width: 90vw;
+    margin: auto;
+    height: 80vh;
+    .columns {
+        height: 100%;
+        .content {
+            position: relative;
+            top: 50%;
+            transform: translateY(-50%);
+            button {
+                margin-right: 1rem;
+            }
+        }
+        img {
+            position: relative;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+    }
+}
+
+.about {
+    background: #FFF;
+    width: 100vw;
+    min-height: 20vh;
+    padding: 2rem 0;
+    .content {
+        margin: auto;
+        width: 90%;
+        h1 {
+            text-align: center;
+        }
+        p {
+            width: 70%;
+            margin: auto;
+            word-wrap: break-word;
+            white-space: pre-line;
+            font-size: 1.1rem;
+        }
+    }
+}
+
+@media (max-width : 780px) {
+    .hero {
+        padding-top: 2.5rem;
+        margin-top: 1rem; 
+        text-align: center;
+    }
+    .hero .columns .content,img {
+        top: initial !important;
+        transform: initial !important;
+    }
+}

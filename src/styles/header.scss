@@ -1,0 +1,30 @@
+.header-n {
+    width: 100vw;
+    background: $primary;
+    padding: 0.5rem 0;
+    .navbar-n {
+        width: 90%;
+        margin: auto;
+        h1 {
+            display: inline-block;
+        }
+        .navbar-item-n {
+            margin: 5px 5px;
+            position: relative;
+            display: inline-block;
+            .button {
+
+            }
+        }
+        .navbar-brand-n {
+            margin-left: 5px;
+        }
+    }
+    
+}
+
+@media (max-width : 450px) {
+    .signout-btn {
+        display: none !important;
+    }
+}
