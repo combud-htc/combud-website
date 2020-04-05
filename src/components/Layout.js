@@ -11,7 +11,7 @@ export default class Layout extends Component {
         this.GetLoggedIn = this.GetLoggedIn.bind(this);
 
         this.state = {
-            loggedIn: true,
+            loggedIn: false,
             username: ""
         }
 
@@ -19,7 +19,7 @@ export default class Layout extends Component {
 
     async GetLoggedIn() {
         try {
-            const r = await axios.get("/Authentication/IsLoggedIn");
+            const r = await axios.get("/api/Authentication/IsLoggedIn");
             const response = r.data;
 
             if (response["statusCode"] != 1) {
@@ -34,6 +34,10 @@ export default class Layout extends Component {
         } catch (e) {
             console.error(e);
         }
+    }
+
+    async componentDidMount() {
+        await this.GetLoggedIn();
     }
 
     render() {

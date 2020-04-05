@@ -19,7 +19,7 @@ export class MapContainer extends Component {
         return (
             <div className="map">
                 <div className="canvas">
-                    {console.log(this.props.tasks)}
+                    {/* {console.log(this.props.tasks)} */}
                     < Map initialCenter={{ lat: this.props.location[0], lng: this.props.location[1] }} google={this.props.google} zoom={14} disableDefaultUI={true} style={{ borderRadius: '10px' }}>
                         {this.props.tasks.map(el => (<Marker key={Math.random()} position={{ lat: el.lat, lng: el.lng }} />))}
                     </Map>

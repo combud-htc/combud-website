@@ -1,9 +1,8 @@
 import React, { Component } from 'react'
-import Slider from 'react-slick'
 import Task from '../Task'
-import NewPost from './NewPost'
 import Map from '../Map'
 import Modal from '../Modal'
+import CountryFormatter from 'countries-code'
 
 export default class Feed extends Component {
     constructor() {
@@ -13,8 +12,8 @@ export default class Feed extends Component {
         this.closeModal = this.closeModal.bind(this)
 
         this.state = {
-            modalTitle: "XD",
-            modalDescription: "xD",
+            modalTitle: "",
+            modalDescription: "",
             modalActive: false
         }
     }
@@ -42,11 +41,13 @@ export default class Feed extends Component {
                             <div className="centerer">
                                 <div className="area">
                                     <p><strong>YOUR AREA</strong></p>
-                                    <h1 className="title">{this.props.user.town}, {this.props.user.country}</h1>
+                                    {/* {console.log(this.props.user)} */}
+                                    <h1 className="title">{this.props.user.town}, {CountryFormatter.getCountry(this.props.user.country)}</h1>
                                 </div>
                                 <div className="task-list">
                                     {
-                                        this.props.tasks.map(el => (<Task openModal={() => this.openModal(el)} key={Math.random()} title={el.title} description={el.description} firstname={el.firstName} lastname={el.lastName} username={el.userName} />))
+                                        this.props.tasks.length > 0 ? this.props.tasks.map(el => (<Task openModal={() => this.openModal(el)} key={Math.random()} title={el.title} description={el.description} firstname={el.firstName} lastname={el.lastName} username={el.userName} />))
+                                            : <h1>We couldn't find anyone nearby that needs help :)</h1>
                                     }
                                 </div>
                             </div>

@@ -1,28 +1,26 @@
 import React, { Component } from 'react'
 import axios from "axios";
-axios.defaults.baseURL = "/api";
-axios.defaults.headers.post["Content-Type"] = "application/json";
 
-export default class NewPost extends Component {
+export default class Settings extends Component {
 
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
 
-        this.NewPost = this.NewPost.bind(this);
         this.handleChange = this.handleChange.bind(this)
+        this.formValid = this.formValid.bind(this)
+        this.handleSubmit = this.handleSubmit.bind(this)
+        this.getLatLong = this.getLatLong.bind(this)
+
+        // console.log(this);
 
         this.state = {
-            title: "",
-            date: "",
-            details: "",
-            address: "",
-            lat: 0,
-            lng: 0,
+            country: this.props.user.country,
+            town: this.props.user.town,
+            radius: this.props.user.radius,
             formErrors: {
-                title: "",
-                date: "",
-                details: "",
-                address: ""
+                country: "",
+                town: "",
+                radius: "",
             }
         }
     }
@@ -31,66 +29,44 @@ export default class NewPost extends Component {
         const { name, value } = e.target
         let formErrors = this.state.formErrors
 
-        console.log(name, value)
-
         this.setState({ [name]: value }, () => {
             switch (name) {
-                case 'title':
-                    formErrors.title = value.length < 3 || value.length > 20 ? 'Minimum of 3 characters and maximum of 20 characters' : "";
+                case 'country':
+                    formErrors.country = value.length > 0 && value.length > 2 ? 'Invalid country' : '';
                     break;
-                case 'date':
-                    formErrors.date = value.length > 0 && ((new Date(value) - new Date()) / 3600000) < 0 || ((new Date(value) - new Date()) / 3600000) > 336 ? 'Please select dates in the future and a maximum of two week ahead' : "";
+                case 'town':
+                    formErrors.town = value.length > 0 && value.length > 30 ? 'Maximum of 30 characters' : '';
                     break;
-                case 'details':
-                    formErrors.details = value.length > 0 && value.length < 30 || value.length > 1000 ? 'Minimum of 30 characters and maximum of 1000 characters' : "";
-                    break;
-                case 'address':
-                    formErrors.address = value.length > 0 && value.length < 10 || value.length > 40 ? 'Minimum of 5 characters and maximum of 30' : "";
+                case 'radius':
+                    formErrors.details = value < 1 || value > 10000 ? 'Minimum of 1 kilometer and a maximum of 1000 kilometers' : "";
                     break;
             }
             this.setState({ formErrors: formErrors })
-            console.log(this.state)
+            // console.log(this.state)
         })
     }
+
+
     async getLatLong(addr) {
         const response = await axios.get('https://maps.googleapis.com/maps/api/geocode/json?address=' + addr + '&key=AIzaSyBPanGjU6aWNdTkv9vtIrGgHcKuuSDQQ0w');
         return [response.data.results[0].geometry.location.lat, response.data.results[0].geometry.location.lng]
     }
 
-    async handleSubmit(e) {
-        e.preventDefault()
-        const title = this.state.title
-        const details = this.state.details
-        const date = this.state.details
-        const address = this.state.address;
-        const [lat, lng] = await this.getLatLong(address);
+    formValid() {
+        let valid = true;
 
-        try {
-            const r = await axios.post("/Post/NewPost", {
-                "Title": title,
-                "Description": details,
-                "Address": address,
-                "Latitude": lat,
-                "Longitude": lng,
-                "DueDate": date
+        Object.values(this.state.formErrors).forEach(val => {
+            val.length > 0 && (valid = false)
+        })
 
-            });
-
-            const response = r.data;
-
-            if (response["statusCode"] != 1) {
-                console.error(response["errorMessage"]);
-            } else {
-                // ok
-            }
-        } catch (e) {
-
-        }
-
+        return valid
     }
 
-    async NewPost() {
-
+    async handleSubmit(e) {
+        e.preventDefault()
+        if (this.formValid) {
+            this.props.updateUserSettings({ radius: this.state.radius, country: this.state.country, town: this.state.town })
+        }
     }
 
     render() {
@@ -103,7 +79,7 @@ export default class NewPost extends Component {
                             <form>
                                 <div className="field">
                                     <p className="control has-icons-left has-icons-right">
-                                        <select onChange={this.handleChange} id="country" name="country" className="input form-control">
+                                        <select value={this.state.country} onChange={this.handleChange} id="country" name="country" className="input form-control">
                                             <option value="AF">Afghanistan</option>
                                             <option value="AX">Åland Islands</option>
                                             <option value="AL">Albania</option>
@@ -365,29 +341,29 @@ export default class NewPost extends Component {
                                 <div className="field">
                                     <label htmlFor="title">Town</label>
                                     <p className="control has-icons-left has-icons-right">
-                                        <input pattern=".{3,}" className="input" type="text" name="title" placeholder="Stockholm" value={this.props.town} onChange={this.handleChange} />
+                                        <input pattern=".{3,}" className="input" type="text" name="town" placeholder="Stockholm" value={this.state.town} onChange={this.handleChange} />
                                         <span className="icon is-small is-left">
                                             <i className="fas fa-building"></i>
                                         </span>
                                     </p>
                                 </div>
-                                {this.state.formErrors.title ? <div className="notification is-warning is-light">
-                                    {this.state.formErrors.title}
+                                {this.state.formErrors.town ? <div className="notification is-warning is-light">
+                                    {this.state.formErrors.town}
                                 </div> : <></>}
                                 <div className="field">
                                     <label htmlFor="title">Display radius (km)</label>
                                     <p className="control has-icons-left has-icons-right">
-                                        <input pattern=".{3,}" className="input" type="text" name="title" placeholder="3000" value={this.props.radius} onChange={this.handleChange} />
+                                        <input pattern=".{3,}" className="input" type="text" name="radius" placeholder="10" value={this.state.radius} onChange={this.handleChange} />
                                         <span className="icon is-small is-left">
                                             <i className="far fa-circle"></i>
                                         </span>
                                     </p>
                                 </div>
-                                {this.state.formErrors.title ? <div className="notification is-warning is-light">
-                                    {this.state.formErrors.title}
+                                {this.state.formErrors.radius ? <div className="notification is-warning is-light">
+                                    {this.state.formErrors.radius}
                                 </div> : <></>}
                                 <div className="field">
-                                    <input className="button is-success" value="Apply" type="submit" onClick={this.handleSubmit} />
+                                    <input className="button is-success" value="Update" type="submit" onClick={this.handleSubmit} />
                                 </div>
                             </form>
                         </div>

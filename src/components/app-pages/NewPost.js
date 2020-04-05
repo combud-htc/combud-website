@@ -1,8 +1,5 @@
 import React, { Component } from 'react'
 import axios from "axios";
-import DatePicker from 'react-date-picker';
-axios.defaults.baseURL = "/api";
-axios.defaults.headers.post["Content-Type"] = "application/json";
 
 export default class NewPost extends Component {
 
@@ -31,7 +28,7 @@ export default class NewPost extends Component {
         const { name, value } = e.target
         let formErrors = this.state.formErrors
 
-        console.log(name, value)
+        // console.log(name, value)
 
         this.setState({ [name]: value }, () => {
             switch (name) {
@@ -49,12 +46,18 @@ export default class NewPost extends Component {
                     break;
             }
             this.setState({ formErrors: formErrors })
-            console.log(this.state)
+            // console.log(this.state)
         })
     }
+
     async getLatLong(addr) {
         const response = await axios.get('https://maps.googleapis.com/maps/api/geocode/json?address=' + addr + '&key=AIzaSyBPanGjU6aWNdTkv9vtIrGgHcKuuSDQQ0w');
-        return [response.data.results[0].geometry.location.lat, response.data.results[0].geometry.location.lng]
+
+        if (response.data.results.length > 0) {
+            return [response.data.results[0].geometry.location.lat, response.data.results[0].geometry.location.lng]
+        } else {
+            return "error"
+        }
     }
 
     async handleSubmit(e) {
@@ -66,22 +69,22 @@ export default class NewPost extends Component {
         const [lat, lng] = await this.getLatLong(address);
 
         try {
-            const r = await axios.post("/Post/NewPost", {
-                "Title": title,
-                "Description": details,
-                "Address": address,
-                "Latitude": lat,
-                "Longitude": lng,
-                "DueDate": date
-
+            const r = await axios.post("/api/Post/NewPost", {
+                "title": title,
+                "description": details,
+                "address": address,
+                "latitude": lat,
+                "longitude": lng,
+                "dueDate": date
             });
 
             const response = r.data;
 
             if (response["statusCode"] != 1) {
-                console.error(response["errorMessage"]);
+                // console.error(response["errorMessage"]);
             } else {
                 // ok
+                window.location.href = "/app"
             }
         } catch (e) {
 

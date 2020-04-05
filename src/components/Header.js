@@ -3,7 +3,7 @@ import { Link } from 'gatsby'
 
 export default class Header extends Component {
     handleLogout() {
-
+        window.location.href = "/api/Authentication/Logout";
     }
 
     render() {
