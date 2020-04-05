@@ -4,3 +4,27 @@
     margin: 0;
     padding: 0;
 }
+
+$primary: #66C3D2;
+$link: #F9F871;
+//$primary: #F23766;
+//$link: #F9F871;
+$notification-padding: 0.5rem;
+
+a, a:link, a:visited {
+    color: blue !important;
+}
+
+body {
+    background: #ecf0f1;
+    min-height: 100vh;
+}
+
+
+@import "~bulma/bulma.sass";
+@import "animate.css";
+@import "loginform.scss";
+@import "homepage.scss";
+@import "footer.scss";
+@import "header.scss";
+@import "app.scss";

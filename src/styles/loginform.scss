@@ -1,0 +1,18 @@
+.login {
+    width: 100%;
+    min-height: 90vh;
+    .centerer {
+        position: relative;
+        margin: 3rem auto;
+        width: 50%;
+    }
+}
+
+@media (max-width : 450px) {
+    .login {
+        height: 80vh;
+        .centerer {
+            width: 85%;
+        }
+    } 
+}

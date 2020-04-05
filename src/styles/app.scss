@@ -1,0 +1,118 @@
+.app-layout {
+    .app-header {
+        background: #FFF;
+        width: 100%;
+        z-index: 100;
+        .centerer {
+            width: 95%;
+            margin: auto;
+            padding: 1rem 0;
+            position: relative;
+            button {
+                margin-right: 1rem;
+            }
+            .right-content {
+                height: 100%;
+                position: absolute;
+                right: 0;
+                top: 0;
+                button {
+                    position: relative;
+                    top: 50%;
+                    transform: translateY(-50%);
+                }
+            }
+        }
+    }
+}
+
+.page .feed {
+    height: 95vh;
+    width: 100%;
+    margin-top: 0.5rem;
+    .columns {
+        height: 100%;
+        .column {
+            height: 100%;
+            padding: 0 !important;
+            .main {
+                width: 100%;
+                height: 100%;
+                background: #f7f7f7;
+                position: relative;
+                .centerer {
+                    position: absolute;
+                    left: 0;
+                    right: 0;
+                    margin: auto;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    width: 90%;
+                    height: 90%;
+                    .area {
+                        margin-left: 1rem;
+                        padding-bottom: 1rem;
+                    }
+                    .task-list {
+                        overflow-y: scroll;
+                        height: 90%;
+                        &::-webkit-scrollbar-track {
+                            background-color: #f5f5f5; 
+                        }
+                        &::-webkit-scrollbar {
+                            width: 10px;
+                            background-color: #f5f5f5; 
+                        }
+                        &::-webkit-scrollbar-thumb {
+                            background-color: $primary;
+                            background-image: -webkit-linear-gradient(45deg, scroll-bar-gradient 25%, transparent 25%, transparent 50%, scroll-bar-gradient 50%, scroll-bar-gradient 75%, transparent 75%, transparent); 
+                        }
+                        border-top-style: solid;
+                        border-bottom-style: solid;
+                        border-color: #cecece;
+                        .task {
+                            width: 95%;
+                            padding: 1rem 0;
+                            margin: 1rem auto !important;
+                            padding: 1rem;
+                            h1 {
+                                margin: 0;
+                            }
+                            .description-text {
+                                max-width: 100%;
+                                white-space: pre-line;
+                                word-break: break-all;
+                                user-select: text;
+                            }
+                        }
+                    }
+                }
+            }
+            .map-container {
+                height: 100%;
+                position: relative;
+                margin: 0;
+            }
+        }
+    }
+}
+
+.page {
+    user-select: none;
+    .columns .column img {
+        position: relative;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+    .newpost {
+        .box {
+            margin: 2rem;
+        }   
+    }
+}
+
+@media (max-width : 450px) {
+    .map-container {
+        display: none !important;
+    }
+}
