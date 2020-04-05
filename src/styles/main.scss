@@ -5,14 +5,21 @@
     padding: 0;
 }
 
-$primary: #7d5fff;
-$link: #620f99;
+$primary: #66C3D2;
+$link: #F9F871;
+//$primary: #F23766;
+//$link: #F9F871;
 $notification-padding: 0.5rem;
+
+a, a:link, a:visited {
+    color: blue !important;
+}
 
 body {
     background: #ecf0f1;
     min-height: 100vh;
 }
+
 
 @import "~bulma/bulma.sass";
 @import "animate.css";

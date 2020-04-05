@@ -9,7 +9,6 @@ export default class NewPost extends Component {
     constructor() {
         super();
 
-        this.NewPost = this.NewPost.bind(this);
         this.handleChange = this.handleChange.bind(this)
 
         this.state = {
@@ -34,24 +33,24 @@ export default class NewPost extends Component {
 
         console.log(name, value)
 
-        this.setState({[name]: value}, () => {
+        this.setState({ [name]: value }, () => {
             switch (name) {
-            case 'title':
-                formErrors.title = value.length < 3 || value.length > 20 ? 'Minimum of 3 characters and maximum of 20 characters' : "";
-                break;
-            case 'date':
-                formErrors.date = value.length > 0 && ((new Date(value) - new Date())/3600000) < 0 || ((new Date(value) - new Date())/3600000) > 336 ? 'Please select dates in the future and a maximum of two week ahead' : "";
-                break;
-            case 'details':
-                formErrors.details = value.length > 0 && value.length < 30 || value.length > 1000 ? 'Minimum of 30 characters and maximum of 1000 characters' : "";
-                break;
-            case 'address':
-                formErrors.address = value.length > 0 && value.length < 10 || value.length > 40 ? 'Minimum of 5 characters and maximum of 30' : "";
-                break;
-        }
-        this.setState({ formErrors: formErrors })
-        console.log(this.state)
-    })
+                case 'title':
+                    formErrors.title = value.length < 3 || value.length > 20 ? 'Minimum of 3 characters and maximum of 20 characters' : "";
+                    break;
+                case 'date':
+                    formErrors.date = value.length > 0 && ((new Date(value) - new Date()) / 3600000) < 0 || ((new Date(value) - new Date()) / 3600000) > 336 ? 'Please select dates in the future and a maximum of two week ahead' : "";
+                    break;
+                case 'details':
+                    formErrors.details = value.length > 0 && value.length < 30 || value.length > 1000 ? 'Minimum of 30 characters and maximum of 1000 characters' : "";
+                    break;
+                case 'address':
+                    formErrors.address = value.length > 0 && value.length < 10 || value.length > 40 ? 'Minimum of 5 characters and maximum of 30' : "";
+                    break;
+            }
+            this.setState({ formErrors: formErrors })
+            console.log(this.state)
+        })
     }
     async getLatLong(addr) {
         const response = await axios.get('https://maps.googleapis.com/maps/api/geocode/json?address=' + addr + '&key=AIzaSyBPanGjU6aWNdTkv9vtIrGgHcKuuSDQQ0w');
@@ -68,31 +67,28 @@ export default class NewPost extends Component {
 
         try {
             const r = await axios.post("/Post/NewPost", {
-                "Title" : title,
-                "Description" : details,
-                "Address" : address,
-                "Latitude" : lat,
-                "Longitude" : lng,
-                "DueDate" : date
-                
+                "Title": title,
+                "Description": details,
+                "Address": address,
+                "Latitude": lat,
+                "Longitude": lng,
+                "DueDate": date
+
             });
 
             const response = r.data;
 
-            if(response["statusCode"] != 1) {
+            if (response["statusCode"] != 1) {
                 console.error(response["errorMessage"]);
             } else {
                 // ok
             }
-        } catch(e) {
+        } catch (e) {
 
         }
 
     }
 
-    async NewPost() {
-        
-    }
 
     render() {
         return (
@@ -116,12 +112,12 @@ export default class NewPost extends Component {
                                 </div> : <></>}
                                 <div className="field">
                                     <label htmlFor="date">Due Date</label>
-                                        <p className="control has-icons-left has-icons-right">
-                                            <input pattern=".{3,}" className="input" type="datetime-local" name="date" onChange={this.handleChange} />
-                                            <span className="icon is-small is-left">
-                                                <i className="fas fa-clock"></i>
-                                            </span>
-                                        </p>
+                                    <p className="control has-icons-left has-icons-right">
+                                        <input pattern=".{3,}" className="input" type="datetime-local" name="date" onChange={this.handleChange} />
+                                        <span className="icon is-small is-left">
+                                            <i className="fas fa-clock"></i>
+                                        </span>
+                                    </p>
                                 </div>
                                 {this.state.formErrors.date ? <div className="notification is-warning is-light">
                                     {this.state.formErrors.date}
@@ -129,36 +125,36 @@ export default class NewPost extends Component {
                                 <div className="field">
                                     <label htmlFor="details">Details</label>
                                     <p className="control has-icons-left has-icons-right">
-                                        <textarea onChange={this.handleChange} className="textarea" name="details" placeholder="e.g. Hey I need groceries, please help I'm too sick to go outside.."></textarea>
+                                        <textarea onChange={this.handleChange} className="textarea" name="details" placeholder="e.g. Hello, I fear going outside but I really need groceries.. I need this.. I will pay using.. Here is my phone number ..."></textarea>
                                     </p>
                                 </div>
                                 {this.state.formErrors.details ? <div className="notification is-warning is-light">
                                     {this.state.formErrors.details}
                                 </div> : <></>}
                                 <div className="field">
-                                    <p>Current location:<b> Stockholm, Sweden</b>. Not correct? Change it in <b><a>settings.</a></b></p>
                                     <label htmlFor="details">Address</label>
                                     <p className="control has-icons-left has-icons-right">
-                                        <input pattern=".{3,}" className="input" type="text" name="address" placeholder="Sweden Stockholm, Riksgatan 3 " onChange={this.handleChange} />
+                                        <input pattern=".{3,}" className="input" type="text" name="address" placeholder="Riksgatan 3 " onChange={this.handleChange} />
                                         <span className="icon is-small is-left">
                                             <i className="fas fa-compass"></i>
                                         </span>
                                     </p>
+                                    <p>Current location:<b> {this.props.user.town}, {this.props.user.country}</b>. Not correct? Change it in settings.</p>
                                 </div>
                                 {this.state.formErrors.address ? <div className="notification is-warning is-light">
                                     {this.state.formErrors.address}
                                 </div> : <></>}
                                 <div className="field">
-                                    <input className="button is-success" value="Post" type="submit" onSubmit={this.handleSubmit} />
+                                    <input className="button is-success" value="Post" type="submit" onClick={this.handleSubmit} />
                                 </div>
                             </form>
                         </div>
                     </div>
                     <div className="column">
-                        <img src="/order.svg"/>
+                        <img src="/order.svg" />
                     </div>
-                </div>
-            </div>
+                </div >
+            </div >
         )
     }
 }
