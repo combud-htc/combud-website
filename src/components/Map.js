@@ -6,28 +6,8 @@ export class MapContainer extends Component {
     constructor() {
         super();
 
-        this.state = {
-            lat: null,
-            lng: null
-        }
-
-        this.onMarkerClick = this.onMarkerClick.bind(this);
         this.getLatLong = this.getLatLong.bind(this);
-        this.changeLocation = this.changeLocation.bind(this);
 
-    }
-
-    async changeLocation() {
-        const data = await this.getLatLong(document.getElementById('xd').value);
-        console.log(data);
-        this.setState({
-            lat: data[0],
-            lng: data[1]
-        })
-    }
-
-    async onMarkerClick() {
-        console.log(await this.getLatLong('Frederiksberg Allegade'))
     }
 
     async getLatLong(addr) {
@@ -39,23 +19,12 @@ export class MapContainer extends Component {
         return (
             <div className="map">
                 <div className="canvas">
-                    <Map initialCenter={{
-                        lat: this.state.lat,
-                        lng: this.state.lng
-                    }} google={this.props.google} zoom={14}>
-
-                        <Marker position={{ lat: this.state.lat, lng: this.state.lng }} onClick={this.onMarkerClick}
-                            name={'Current location'} />
-                        <Marker />
-
-                        <InfoWindow onClose={this.onInfoWindowClose}>
-                            <div>
-                                <h1>xd</h1>
-                            </div>
-                        </InfoWindow>
+                    {/* {console.log(this.props.tasks)} */}
+                    < Map initialCenter={{ lat: this.props.location[0], lng: this.props.location[1] }} google={this.props.google} zoom={14} disableDefaultUI={true} style={{ borderRadius: '10px' }}>
+                        {this.props.tasks.map(el => (<Marker key={Math.random()} position={{ lat: el.lat, lng: el.lng }} />))}
                     </Map>
                 </div>
-            </div>
+            </div >
         );
     }
 }

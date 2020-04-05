@@ -11,29 +11,33 @@ export default class Layout extends Component {
         this.GetLoggedIn = this.GetLoggedIn.bind(this);
 
         this.state = {
-            loggedIn: true,
-            username : ""
+            loggedIn: false,
+            username: ""
         }
 
     }
 
     async GetLoggedIn() {
         try {
-            const r = await axios.get("/Authentication/IsLoggedIn");
+            const r = await axios.get("/api/Authentication/IsLoggedIn");
             const response = r.data;
 
-            if(response["statusCode"] != 1) {
+            if (response["statusCode"] != 1) {
                 console.error(response["errorMessage"]);
             } else {
-                if(response["loggedIn"]) {
-                    this.setState({"username": response["Username"]});
+                if (response["loggedIn"]) {
+                    this.setState({ "username": response["Username"] });
                 }
 
-                this.setState({"loggedIn" : response["isLoggedIn"]});
+                this.setState({ "loggedIn": response["isLoggedIn"] });
             }
-        } catch(e) {
+        } catch (e) {
             console.error(e);
         }
+    }
+
+    async componentDidMount() {
+        await this.GetLoggedIn();
     }
 
     render() {
@@ -43,9 +47,9 @@ export default class Layout extends Component {
                     <title>ComBud &mdash; Helping the most vulnerable during the COVID-19 pandemic.</title>
                     <script src="https://kit.fontawesome.com/365aff2219.js" crossorigin="anonymous"></script>
                 </Helmet>
-                <Header loggedIn={this.state.loggedIn}/>
+                <Header loggedIn={this.state.loggedIn} />
                 {this.props.children}
-                <Footer/>
+                <Footer />
             </div>
         )
     }

@@ -7,8 +7,8 @@ export default class About extends Component {
                 <div className="content">
                     <h1 className="title">How it works.</h1>
                     <p>
-                    {`
-                        This platform helps you help others. As a result of the COVID-19 pandemic, our everyday life have been turned upside down. People all over the world are getting laid off and many can't go outside of their home for various reasons.
+                        {`
+                        This platform helps you help others. As a result of the COVID-19 pandemic, our everyday lives have been turned upside down. People all over the world are getting laid off and many can't go outside of their home for various reasons.
                         
                         In times like this we must stick up for one another and spread some love. By registering an account you can access a list over people in your area in need of your assistance, whether it is to buy bread and milk or pick up mail at the post office. 
 
